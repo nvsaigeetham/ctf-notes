@@ -17,83 +17,78 @@ By [@nvsaigeetham](https://github.com/nvsaigeetham) · [CyberAI Agency](https://
 
 ```
 ctf-notes/
-├── README.md                          ← You are here (index)
+├── README.md                              ← You are here
 │
-├── wiz-ctf/
-│   ├── 01-needle-in-a-haystack.md    ← Web/OSINT · Client-side auth bypass
-│   ├── 02-game-of-pods.md            ← Kubernetes RBAC · CVE-2024-3177
-│   ├── 03-contain-me-if-you-can.md   ← Container escape via PostgreSQL
-│   ├── 04-breaking-the-barriers.md   ← Azure OAuth · Entra ID exploitation
-│   └── 05-malware-busters.md         ← Golang malware RE · Dual-layer decryption
+├── wiz-ctf/                               ← Full detailed write-ups
+│   ├── 01-needle-in-a-haystack.md
+│   ├── 02-game-of-pods.md
+│   ├── 03-contain-me-if-you-can.md
+│   ├── 04-breaking-the-barriers.md
+│   └── 05-malware-busters.md
 │
-├── mcrta-labs/
-│   ├── 01-aws-ssrf-imds.md           ← AWS SSRF → EC2 IMDS credential theft
-│   ├── 02-aws-iam-privesc.md         ← AWS IAM privilege escalation
-│   └── 03-azure-imds-jwt.md          ← Azure IMDS JWT token extraction
-│
-└── mcbta-labs/
-    └── 01-siem-challenges.md          ← ELK/Kibana · 30/30 challenges
+└── cyberwarfare-labs/                     ← High-level overviews only
+    ├── MCBTA.md
+    └── MCRTA.md
 ```
+
+> ⚠️ **Note on Cyberwarfare Labs content:** Per provider guidelines, detailed
+> step-by-step solutions for MCRTA and MCBTA certification lab challenges are
+> not shared publicly. Only high-level attack/defense category overviews are provided.
 
 ---
 
-## 🏆 Wiz CTF Challenges
+## 🏆 Wiz CTF — Full Write-ups
 
 | # | Challenge | Category | Difficulty | Key Technique |
 |---|---|---|---|---|
 | 01 | [Needle in a Haystack](./wiz-ctf/01-needle-in-a-haystack.md) | Web / OSINT | Medium | Client-side auth bypass |
 | 02 | [Game of Pods](./wiz-ctf/02-game-of-pods.md) | Kubernetes | Hard | RBAC abuse · CVE-2024-3177 |
-| 03 | [Contain Me If You Can](./wiz-ctf/03-contain-me-if-you-can.md) | Container | Hard | PostgreSQL COPY FROM PROGRAM |
-| 04 | [Breaking The Barriers](./wiz-ctf/04-breaking-the-barriers.md) | Azure | Hard | OAuth implicit flow · Entra ID |
-| 05 | [Malware Busters](./wiz-ctf/05-malware-busters.md) | Reverse Engineering | Hard | Golang RE · XOR + AES decryption |
+| 03 | [Contain Me If You Can](./wiz-ctf/03-contain-me-if-you-can.md) | Container Escape | Hard | PostgreSQL COPY FROM PROGRAM |
+| 04 | [Breaking The Barriers](./wiz-ctf/04-breaking-the-barriers.md) | Azure / OAuth | Hard | Implicit flow token theft · Entra ID |
+| 05 | [Malware Busters](./wiz-ctf/05-malware-busters.md) | Reverse Engineering | Hard | Golang RE · XOR + AES-256-CBC |
 
 ---
 
-## ☁️ MCRTA Labs — Multi-Cloud Red Team
+## 🎓 Cyberwarfare Labs — Certification Overviews
 
-| # | Lab | Cloud | Key Technique |
+| Certification | File | Clouds | Focus |
 |---|---|---|---|
-| 01 | [AWS SSRF → IMDS Credential Theft](./mcrta-labs/01-aws-ssrf-imds.md) | AWS | SSRF · EC2 metadata service |
-| 02 | [AWS IAM Privilege Escalation](./mcrta-labs/02-aws-iam-privesc.md) | AWS | PassRole · Lambda abuse |
-| 03 | [Azure IMDS JWT Extraction](./mcrta-labs/03-azure-imds-jwt.md) | Azure | Managed identity token theft |
-
----
-
-## 🔵 MCBTA Labs — Multi-Cloud Blue Team
-
-| # | Lab | Challenges | Result |
-|---|---|---|---|
-| 01 | [ELK/Kibana SIEM Challenges](./mcbta-labs/01-siem-challenges.md) | 30 challenges across AWS · Azure · GCP | 30/30 ✅ |
+| MCRTA — Multi-Cloud Red Team Analyst | [MCRTA.md](./cyberwarfare-labs/MCRTA.md) | AWS · Azure | Offensive — SSRF, IAM privesc, OAuth abuse |
+| MCBTA — Multi-Cloud Blue Team Analyst | [MCBTA.md](./cyberwarfare-labs/MCBTA.md) | AWS · Azure · GCP | Defensive — ELK/Kibana SIEM, 30/30 challenges |
 
 ---
 
 ## 🗺️ MITRE ATT&CK Coverage
 
-| Technique | ID | Covered In |
+| Technique | ID | Source |
 |---|---|---|
+| Search Open Websites/Domains | T1593 | Needle in a Haystack |
 | Gather Victim Host Information | T1592 | Needle in a Haystack |
 | Exploit Public-Facing Application | T1190 | Needle in a Haystack |
+| Credentials in Files | T1552.001 | Needle in a Haystack |
 | Deploy Container | T1610 | Game of Pods |
 | Escape to Host | T1611 | Game of Pods · Contain Me |
 | Container API Credential Access | T1552.007 | Game of Pods · Contain Me |
 | Command and Scripting Interpreter | T1059 | Contain Me If You Can |
-| Application Access Token Abuse | T1550.001 | Breaking The Barriers |
+| Data from Local System | T1005 | Contain Me If You Can |
 | Steal Application Access Token | T1528 | Breaking The Barriers |
-| Obfuscated Files / Information | T1027 | Malware Busters |
-| Server-Side Request Forgery | T1190 | AWS SSRF Lab |
-| Unsecured Credentials in Metadata | T1552.007 | AWS SSRF · Azure IMDS |
-| Valid Accounts — Cloud Accounts | T1078.004 | AWS IAM Privesc |
+| Use Alternate Authentication Material | T1550.001 | Breaking The Barriers |
+| Cloud Service Discovery | T1526 | Breaking The Barriers |
+| Data from Cloud Storage | T1530 | Breaking The Barriers |
+| Obfuscated Files or Information | T1027 | Malware Busters |
+| Software Packing | T1027.002 | Malware Busters |
 
 ---
 
-## 🛠️ Tools Used Across Challenges
+## 🛠️ Tools Referenced
 
 ```
 Reconnaissance   → subfinder · amass · GitHub OSINT
-Web Analysis     → Burp Suite · curl · Browser DevTools
-Cloud            → AWS CLI · Azure CLI · kubectl · psql
-Reverse Eng.     → Ghidra · strings · file · ltrace · strace
-Scripting        → Python · pycryptodome · base64
+Web Testing      → Burp Suite · curl · Browser DevTools
+Cloud            → AWS CLI · Azure CLI · kubectl
+Database         → psql (PostgreSQL client)
+Reverse Eng.     → Ghidra · strings · file · go tool objdump
+Scripting        → Python 3 · pycryptodome
 SIEM             → ELK Stack · Kibana · KQL
 ```
 
@@ -101,20 +96,21 @@ SIEM             → ELK Stack · Kibana · KQL
 
 ## 📚 Related Resources
 
-- [CloudGoat-OCI](https://github.com/CyberAI-Agency/CloudGoat-OCI) — Practice OCI attack scenarios (built by us)
+- [CloudGoat-OCI](https://github.com/CyberAI-Agency/CloudGoat-OCI) — Practice OCI attack scenarios
 - [Awesome Cloud Security](https://github.com/CyberAI-Agency/awesome-cloud-sec) — Curated security tools list
 - [MITRE ATT&CK Cloud Matrix](https://attack.mitre.org/matrices/enterprise/cloud/)
-- [Wiz CTF](https://www.wiz.io/lp/wiz-ctf) — Cloud security CTF platform
+- [Wiz CTF Platform](https://www.wiz.io/lp/wiz-ctf)
+- [Cyberwarfare Labs](https://cyberwarfare.live) — MCRTA / MCBTA certifications
 
 ---
 
 ## 🤝 Contributing
 
-Have cloud security CTF write-ups to share? PRs are welcome!
+Have public CTF write-ups to share? PRs welcome!
 
-- Add your write-up in the appropriate folder
-- Follow the existing template structure (scenario → attack path → tools → takeaways → MITRE)
-- Redact any sensitive or identifying information before submitting
+- Only write-ups for **publicly available, free CTFs** are accepted
+- Follow the existing template: scenario → steps → tools → takeaways → MITRE
+- Do **not** share solutions for paid certification labs — respect provider terms
 - See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines
 
 ---
