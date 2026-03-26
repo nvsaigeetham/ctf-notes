@@ -1,0 +1,139 @@
+# MCRTA Labs — Multi-Cloud Red Team Analyst
+
+**Certification:** Multi-Cloud Red Team Analyst (MCRTA)
+**Provider:** Cyberwarfare Labs
+**Status:** ✅ Certified
+
+> ⚠️ **Provider Notice:** Per Cyberwarfare Labs' terms of service, detailed
+> step-by-step lab solutions are not shared publicly. This document contains
+> only high-level attack category overviews and general technique summaries
+> for educational reference.
+>
+> To attempt these labs yourself, visit: [cyberwarfare.live](https://cyberwarfare.live)
+
+---
+
+## Certification Overview
+
+MCRTA covers offensive security techniques across **AWS** and **Azure** cloud environments. Labs are hands-on, scenario-based, and designed to simulate real-world multi-cloud attack scenarios.
+
+---
+
+## AWS Lab Categories
+
+### SSRF & Instance Metadata Exploitation
+**Technique category:** Server-Side Request Forgery attacks against web applications running on EC2, exploiting the EC2 Instance Metadata Service (IMDS) to steal IAM role credentials.
+
+**Key concepts covered:**
+- SSRF vulnerability identification and exploitation
+- EC2 IMDS architecture (IMDSv1 vs IMDSv2)
+- IAM role credential theft via metadata endpoint
+- Post-exploitation with stolen temporary credentials
+
+**Defensive takeaway:** Enforce IMDSv2 on all EC2 instances to require a PUT-based session token — SSRF attacks cannot forge PUT requests from most web application contexts.
+
+---
+
+### IAM Enumeration & Privilege Escalation
+**Technique category:** Starting with minimal IAM permissions, enumerate the environment and identify paths to escalate privileges to higher-access roles or policies.
+
+**Key concepts covered:**
+- Systematic IAM permission enumeration
+- Identifying dangerous permission combinations (PassRole, CreateFunction, etc.)
+- Lambda and EC2-based privilege escalation paths
+- Abusing trust relationships between roles and services
+
+**Defensive takeaway:** Audit IAM for dangerous permission combinations. Tools like pMapper can automatically identify privilege escalation paths across your AWS accounts.
+
+---
+
+### Cloud Storage Attacks
+**Technique category:** Identifying and exploiting misconfigured S3 buckets and related storage resources.
+
+**Key concepts covered:**
+- Public bucket discovery and enumeration
+- Credential exposure in S3-hosted files
+- Cross-account S3 access abuse
+- Logging gaps in storage access
+
+**Defensive takeaway:** Enable S3 Block Public Access at the account level and audit bucket policies regularly with automated tooling.
+
+---
+
+## Azure Lab Categories
+
+### Azure IMDS & Managed Identity Abuse
+**Technique category:** Extracting OAuth2 JWT tokens from Azure VM Instance Metadata Service and using them to access Azure resources.
+
+**Key concepts covered:**
+- Azure IMDS token endpoint architecture
+- Managed identity scope and permission inheritance
+- Using stolen JWT tokens against Azure REST APIs
+- Key Vault secret access via managed identity tokens
+
+**Defensive takeaway:** Apply least privilege to managed identities. Scope permissions to specific resources rather than subscription-wide RBAC roles.
+
+---
+
+### Entra ID & OAuth Exploitation
+**Technique category:** Exploiting misconfigured Azure app registrations and OAuth flows to capture access tokens and escalate privileges.
+
+**Key concepts covered:**
+- OAuth 2.0 flow types and security trade-offs
+- Implicit flow token interception
+- JWT token decoding and claims analysis
+- Entra ID RBAC role abuse
+
+**Defensive takeaway:** Disable OAuth implicit grant flow for all app registrations. Use Authorization Code flow with PKCE for all public clients.
+
+---
+
+### Azure Lateral Movement
+**Technique category:** Moving between Azure resources and identities after initial access.
+
+**Key concepts covered:**
+- Service principal enumeration
+- Cross-subscription access via role assignments
+- Automation account runbook abuse
+- Managed identity chaining
+
+**Defensive takeaway:** Audit cross-subscription role assignments regularly. Restrict Automation Account runbook permissions to minimum required scope.
+
+---
+
+## MITRE ATT&CK Techniques Covered
+
+| Category | Techniques |
+|---|---|
+| Initial Access | T1190 — Exploit Public-Facing Application |
+| Credential Access | T1552.007 — Cloud Instance Metadata API |
+| Privilege Escalation | T1548 — Abuse Elevation Control Mechanism |
+| Lateral Movement | T1550.001 — Application Access Token |
+| Discovery | T1526 — Cloud Service Discovery |
+| Collection | T1530 — Data from Cloud Storage |
+
+---
+
+## Key Learnings
+
+1. **IMDS endpoints are high-value targets** — both AWS and Azure expose credential material via metadata services. Any SSRF vulnerability in a cloud-hosted app should immediately be tested for IMDS access.
+
+2. **IAM/RBAC is both the perimeter and the interior** — misconfigured permissions create attack paths that bypass all network controls.
+
+3. **Managed identities are powerful** — they grant cloud-native access without credential management, but over-permissioned managed identities are dangerous.
+
+4. **The attack surface expands with each cloud service used** — each Lambda, Automation Account, and service principal is a potential pivot point.
+
+---
+
+## Recommended Resources
+
+- [MITRE ATT&CK Cloud Matrix](https://attack.mitre.org/matrices/enterprise/cloud/)
+- [AWS IAM Privilege Escalation Methods](https://rhinosecuritylabs.com/aws/aws-privilege-escalation-methods-mitigation/) — Rhino Security Labs
+- [Azure Attack Techniques](https://attack.mitre.org/matrices/enterprise/cloud/azure/)
+- [CloudGoat-OCI](https://github.com/CyberAI-Agency/CloudGoat-OCI) — Practice OCI attack scenarios
+- [Awesome Cloud Security](https://github.com/CyberAI-Agency/awesome-cloud-sec)
+
+---
+
+*[← Back to CTF Notes Index](../README.md)*
